@@ -28,8 +28,12 @@ class DbCreateCommand extends Command
         // On récupère les réglages de la connexion (type de base, chemin du fichier...).
         $params = $this->connection->getParams();
 
+        // Si la connexion a un « path », c'est une base SQLite (un simple fichier).
+        $isSqlite = isset($params['path']);
+
         $io->writeln('La commande eyramjoseph:dbcreate est reconnue.');
         $io->writeln('Type de base : ' . $params['driver']);
+        $io->writeln($isSqlite ? 'Base SQLite détectée (un simple fichier).' : 'Base serveur détectée (MySQL, PostgreSQL...).');
 
         return Command::SUCCESS;
     }
