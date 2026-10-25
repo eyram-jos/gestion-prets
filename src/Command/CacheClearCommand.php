@@ -29,6 +29,9 @@ class CacheClearCommand extends Command
             return Command::FAILURE;
         }
 
+        // Message de succès final, affiché dans un cadre vert.
+        $io->success('Cache vidé.');
+
         return Command::SUCCESS;
     }
 }
