@@ -57,6 +57,25 @@ class DbCreateCommand extends Command
             }
         }
 
+        // Action 2 : recréer la base.
+        if ($isSqlite) {
+            // SQLite : on crée un fichier vide, qui sera la nouvelle base.
+            $dossier = dirname($params['path']);
+            if (!is_dir($dossier)) {
+                mkdir($dossier, 0777, true);
+            }
+            file_put_contents($params['path'], '');
+            $io->writeln('Base SQLite créée : ' . $params['path']);
+        } else {
+            // Autres bases (MySQL, PostgreSQL) : on utilise la commande de Doctrine.
+            $create = $application->find('doctrine:database:create');
+            $code = $create->run(new ArrayInput([]), $output);
+            if (Command::SUCCESS !== $code) {
+                $io->error('Échec de la création de la base.');
+                return Command::FAILURE;
+            }
+        }
+
         return Command::SUCCESS;
     }
 }
