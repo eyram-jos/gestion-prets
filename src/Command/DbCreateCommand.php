@@ -76,6 +76,9 @@ class DbCreateCommand extends Command
             }
         }
 
+        // Message de succès final, affiché dans un cadre vert.
+        $io->success('Base de données supprimée (si elle existait) puis recréée.');
+
         return Command::SUCCESS;
     }
 }
