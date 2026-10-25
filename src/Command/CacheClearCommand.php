@@ -18,9 +18,7 @@ class CacheClearCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-
-        $io->writeln('La commande eyramjoseph:cache:clear est reconnue.');
-
+        
         // On retrouve la commande cache:clear de Symfony, puis on la lance.
         $clear = $this->getApplication()->find('cache:clear');
         $code = $clear->run(new ArrayInput([]), $output);
