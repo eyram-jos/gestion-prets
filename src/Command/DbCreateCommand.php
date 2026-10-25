@@ -33,10 +33,6 @@ class DbCreateCommand extends Command
         // Si la connexion a un « path », c'est une base SQLite (un simple fichier).
         $isSqlite = isset($params['path']);
 
-        $io->writeln('La commande eyramjoseph:dbcreate est reconnue.');
-        $io->writeln('Type de base : ' . $params['driver']);
-        $io->writeln($isSqlite ? 'Base SQLite détectée (un simple fichier).' : 'Base serveur détectée (MySQL, PostgreSQL...).');
-
         // Action 1 : supprimer la base si elle existe.
         if ($isSqlite) {
             // SQLite : on ferme la connexion, puis on supprime le fichier.
