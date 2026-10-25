@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
-    name: 'eyramjoseph:dbcreate',
+    name: 'eyramjoseph:db:create',
     description: 'Supprime la base de données si elle existe puis la recrée',
 )]
 class DbCreateCommand extends Command
