@@ -29,7 +29,7 @@ classDiagram
     class ModeCotisation {
         Boolean isLibre
     }
-    class Cooperative {
+    class Groupement {
         String nom
         String adresse
         String tel
@@ -46,8 +46,8 @@ classDiagram
     Role "1" --> "*" Membre
     Membre "1" --> "*" ModeCotisation
     Campagne "1" --> "*" ModeCotisation
-    Cooperative "1" --> "*" Campagne
-    Cooperative "1" --> "*" Membre
+    Groupement "1" --> "*" Campagne
+    Groupement "1" --> "*" Membre
     Membre "1" --> "*" Pret
 ```
 
@@ -60,7 +60,6 @@ classDiagram
 
 ## À confirmer
 
-- Le nom de la classe `Cooperative` : nom provisoire.
 - Les noms `Tontine` et `Epargne` : noms provisoires.
 
 ## Prochaines évolutions prévues
