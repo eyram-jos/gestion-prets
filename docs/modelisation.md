@@ -15,7 +15,7 @@ classDiagram
         String tel
         String adresse
         String login
-        String motDePasse
+        String fonction
     }
     class Campagne {
         <<abstract>>
@@ -58,9 +58,12 @@ classDiagram
 - **ModeCotisation** relie les membres aux campagnes (un membre participe à plusieurs campagnes, une campagne a plusieurs membres) et indique si la cotisation est libre.
 - Une **coopérative** regroupe des membres et des campagnes.
 
-## À confirmer
+## Points confirmés
 
-- Les noms `Tontine` et `Epargne` : noms provisoires.
+- Le nom `Groupement` (classe reliée à `Membre` et `Campagne`) : confirmé par un camarade.
+- Les noms `Tontine` et `Epargne` (classes enfants de `Campagne`) : confirmés.
+- Le dernier attribut de `Membre` est `fonction` : confirmé.
+- Les prêts : le professeur laisse le choix de la conception.
 
 ## Prochaines évolutions prévues
-- Décider si les prêts ont des types (héritage), un statut ou un taux d'intérêt, selon ce que demande le professeur.
+- Concevoir les prêts (conception libre) : types de prêts avec l'héritage, statut, taux d'intérêt.
