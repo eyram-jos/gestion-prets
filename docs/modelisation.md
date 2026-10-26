@@ -35,6 +35,12 @@ classDiagram
         String tel
     }
 
+        class Pret {
+        Float montant
+        Integer dureeEnMois
+        DateTime dateDebut
+    }
+
     Campagne <|-- Tontine
     Campagne <|-- Epargne
     Role "1" --> "*" Membre
@@ -42,6 +48,7 @@ classDiagram
     Campagne "1" --> "*" ModeCotisation
     Cooperative "1" --> "*" Campagne
     Cooperative "1" --> "*" Membre
+    Membre "1" --> "*" Pret
 ```
 
 ## Lecture du modèle
@@ -57,5 +64,4 @@ classDiagram
 - Les noms `Tontine` et `Epargne` : noms provisoires.
 
 ## Prochaines évolutions prévues
-
-- Ajouter les prêts : un membre peut faire un prêt pour une durée donnée.
+- Décider si les prêts ont des types (héritage), un statut ou un taux d'intérêt, selon ce que demande le professeur.
