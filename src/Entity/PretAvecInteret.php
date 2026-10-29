@@ -11,6 +11,17 @@ class PretAvecInteret extends Pret
     #[ORM\Column]
     private ?float $tauxInteret = null;
 
+    public function libelleType(): string
+    {
+        return 'Avec intérêt';
+    }
+
+    // Le taux annuel est celui enregistré pour ce prêt.
+    public function tauxAnnuel(): float
+    {
+        return $this->tauxInteret ?? 0.0;
+    }
+
     // Avec intérêt : montant + intérêts simples (montant x taux / 100 x durée en mois / 12).
     public function montantTotalARembourser(): float
     {

@@ -11,6 +11,15 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\DiscriminatorMap(['sans_interet' => PretSansInteret::class, 'avec_interet' => PretAvecInteret::class])]
 abstract class Pret
 {
+    // Chaque type de prêt donne son libellé.
+    abstract public function libelleType(): string;
+
+    // Taux annuel en pourcentage : 0 par défaut, redéfini par le prêt avec intérêt.
+    public function tauxAnnuel(): float
+    {
+        return 0.0;
+    }
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
