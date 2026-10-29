@@ -7,4 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class Epargne extends Campagne
 {
+    public function libelleType(): string
+    {
+        return 'Épargne';
+    }
 }
