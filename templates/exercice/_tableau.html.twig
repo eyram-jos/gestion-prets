@@ -1,0 +1,22 @@
+<table>
+    <thead>
+        <tr>
+            <th>Période</th>
+            <th>Date limite des prêts</th>
+            <th class="nombre">Rétribution</th>
+            <th>Statut</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for exercice in exercices %}
+            <tr>
+                <td>{{ exercice.dateDebut|date('d/m/Y') }} au {{ exercice.dateFin|date('d/m/Y') }}</td>
+                <td>{{ exercice.dateLimitePrets|date('d/m/Y') }}</td>
+                <td class="nombre">{{ exercice.retribution|number_format(1, ',', ' ') }} %</td>
+                <td><span class="badge {{ exercice.statut.estOuvert ? 'en-cours' : 'cloture' }}">{{ exercice.statut.libelle }}</span></td>
+                <td><a href="{{ path('exercice_show', {id: exercice.id}) }}">Voir les campagnes</a></td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

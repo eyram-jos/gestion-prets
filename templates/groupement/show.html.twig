@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ groupement.nom }}{% endblock %}
+
+{% block body %}
+    <p class="fil"><a href="{{ path('groupement_index') }}">Groupements</a> &gt; {{ groupement.nom }}</p>
+
+    <h1>{{ groupement.nom }}</h1>
+    <p>{{ groupement.adresse }} — {{ groupement.tel }}</p>
+    <p><a href="{{ path('groupement_membres', {id: groupement.id}) }}">Voir les membres du groupement</a></p>
+
+    <h2>Exercices en cours</h2>
+    {% if enCours is empty %}
+        <p class="vide">Aucun exercice en cours.</p>
+    {% else %}
+        {% include 'exercice/_tableau.html.twig' with {exercices: enCours} %}
+    {% endif %}
+
+    <h2>Exercices clôturés</h2>
+    {% if clotures is empty %}
+        <p class="vide">Aucun exercice clôturé.</p>
+    {% else %}
+        {% include 'exercice/_tableau.html.twig' with {exercices: clotures} %}
+    {% endif %}
+{% endblock %}

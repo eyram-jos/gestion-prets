@@ -42,4 +42,18 @@ class GroupementController extends AbstractController
 
         return $this->render('groupement/index.html.twig', ['lignes' => $lignes]);
     }
+
+    // Fiche d'un groupement : ses exercices en cours, puis ses exercices clôturés.
+    #[Route('/groupements/{id}', name: 'groupement_show', requirements: ['id' => '\d+'])]
+    public function show(Groupement $groupement): Response
+    {
+        $exercices = $this->em->getRepository(Exercice::class)
+            ->findBy(['groupement' => $groupement], ['dateDebut' => 'DESC']);
+
+        return $this->render('groupement/show.html.twig', [
+            'groupement' => $groupement,
+            'enCours' => array_filter($exercices, fn (Exercice $e) => $e->getStatut()->estOuvert()),
+            'clotures' => array_filter($exercices, fn (Exercice $e) => !$e->getStatut()->estOuvert()),
+        ]);
+    }
 }
