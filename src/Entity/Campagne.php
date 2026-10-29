@@ -11,6 +11,9 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\DiscriminatorMap(['tontine' => Tontine::class, 'epargne' => Epargne::class])]
 abstract class Campagne
 {
+    // Chaque type de campagne donne son propre libellé.
+    abstract public function libelleType(): string;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

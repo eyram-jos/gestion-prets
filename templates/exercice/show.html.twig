@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Exercice {{ exercice.dateDebut|date('Y') }} - {{ exercice.groupement.nom }}{% endblock %}
+
+{% block body %}
+    <p class="fil">
+        <a href="{{ path('groupement_index') }}">Groupements</a> &gt;
+        <a href="{{ path('groupement_show', {id: exercice.groupement.id}) }}">{{ exercice.groupement.nom }}</a> &gt;
+        Exercice {{ exercice.dateDebut|date('Y') }}
+    </p>
+
+    <h1>Exercice du {{ exercice.dateDebut|date('d/m/Y') }} au {{ exercice.dateFin|date('d/m/Y') }}</h1>
+    <p>
+        <span class="badge {{ exercice.statut.estOuvert ? 'en-cours' : 'cloture' }}">{{ exercice.statut.libelle }}</span>
+        — Date limite des prêts : {{ exercice.dateLimitePrets|date('d/m/Y') }}
+        — Rétribution : {{ exercice.retribution|number_format(1, ',', ' ') }} %
+    </p>
+
+    <h2>Campagnes</h2>
+    {% if campagnes is empty %}
+        <p class="vide">Aucune campagne pour cet exercice.</p>
+    {% else %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Type</th>
+                    <th>Période</th>
+                    <th class="nombre">Montant par séance</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for campagne in campagnes %}
+                    <tr>
+                        <td>{{ campagne.nom }}</td>
+                        <td>{{ campagne.libelleType }}</td>
+                        <td>{{ campagne.dateDebut|date('d/m/Y') }} au {{ campagne.dateFin|date('d/m/Y') }}</td>
+                        <td class="nombre">{{ campagne.montant|number_format(0, ',', ' ') }} FCFA</td>
+                        <td><a href="{{ path('campagne_show', {id: campagne.id}) }}">Voir la campagne</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    <h2>Prêts de l'exercice</h2>
+    {% if prets is empty %}
+        <p class="vide">Aucun prêt pour cet exercice.</p>
+    {% else %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Membre</th>
+                    <th>Type</th>
+                    <th>Date de début</th>
+                    <th class="nombre">Durée (mois)</th>
+                    <th class="nombre">Montant</th>
+                    <th class="nombre">Taux annuel</th>
+                    <th class="nombre">Total à rembourser</th>
+                    <th class="nombre">Intérêts</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pret in prets %}
+                    <tr>
+                        <td>{{ pret.membre.prenom }} {{ pret.membre.nom }}</td>
+                        <td>{{ pret.libelleType }}</td>
+                        <td>{{ pret.dateDebut|date('d/m/Y') }}</td>
+                        <td class="nombre">{{ pret.dureeEnMois }}</td>
+                        <td class="nombre">{{ pret.montant|number_format(0, ',', ' ') }} FCFA</td>
+                        <td class="nombre">{{ pret.tauxAnnuel|number_format(1, ',', ' ') }} %</td>
+                        <td class="nombre">{{ pret.montantTotalARembourser|number_format(2, ',', ' ') }} FCFA</td>
+                        <td class="nombre">{{ pret.montantInterets|number_format(2, ',', ' ') }} FCFA</td>
+                    </tr>
+                {% endfor %}
+                <tr class="total">
+                    <td colspan="4">Totaux</td>
+                    <td class="nombre">{{ totalPrets|number_format(0, ',', ' ') }} FCFA</td>
+                    <td></td>
+                    <td></td>
+                    <td class="nombre">{{ totalInterets|number_format(2, ',', ' ') }} FCFA</td>
+                </tr>
+            </tbody>
+        </table>
+        <p><strong>Intérêts à verser dans la caisse sociale : {{ totalInterets|number_format(2, ',', ' ') }} FCFA</strong></p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,105 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ campagne.nom }}{% endblock %}
+
+{% block body %}
+    <p class="fil">
+        <a href="{{ path('groupement_index') }}">Groupements</a> &gt;
+        <a href="{{ path('groupement_show', {id: campagne.exercice.groupement.id}) }}">{{ campagne.exercice.groupement.nom }}</a> &gt;
+        <a href="{{ path('exercice_show', {id: campagne.exercice.id}) }}">Exercice {{ campagne.exercice.dateDebut|date('Y') }}</a> &gt;
+        {{ campagne.nom }}
+    </p>
+
+    <h1>{{ campagne.nom }}</h1>
+    <p>
+        {{ campagne.libelleType }}
+        — du {{ campagne.dateDebut|date('d/m/Y') }} au {{ campagne.dateFin|date('d/m/Y') }}
+        — Montant par séance : {{ campagne.montant|number_format(0, ',', ' ') }} FCFA
+    </p>
+
+    <h2>Membres de la campagne</h2>
+    {% if modes is empty %}
+        <p class="vide">Aucun membre dans cette campagne.</p>
+    {% else %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Fonction</th>
+                    <th>Mode de cotisation</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for mode in modes %}
+                    <tr>
+                        <td>{{ mode.membre.nom }}</td>
+                        <td>{{ mode.membre.prenom }}</td>
+                        <td>{{ mode.membre.fonction }}</td>
+                        <td>{{ mode.libre ? 'Libre' : 'Fixe' }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    <h2>Séances</h2>
+    {% if tableaux is empty %}
+        <p class="vide">Aucune séance pour cette campagne.</p>
+    {% else %}
+        {% for tableau in tableaux %}
+            <h3>Séance {{ tableau.seance.numero }} — {{ tableau.seance.dateSeance|date('d/m/Y') }}</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Membre</th>
+                        <th class="nombre">Cotisation</th>
+                        <th class="nombre">Amende</th>
+                        <th class="nombre">Cumul des cotisations</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ligne in tableau.lignes %}
+                        <tr>
+                            <td>{{ ligne.membre.prenom }} {{ ligne.membre.nom }}</td>
+                            <td class="nombre">{{ ligne.cotisation|number_format(0, ',', ' ') }} FCFA</td>
+                            <td class="nombre">{{ ligne.amende|number_format(0, ',', ' ') }} FCFA</td>
+                            <td class="nombre">{{ ligne.cumul|number_format(0, ',', ' ') }} FCFA</td>
+                        </tr>
+                    {% endfor %}
+                    <tr class="total">
+                        <td>Total de la séance</td>
+                        <td class="nombre">{{ tableau.totalCotisations|number_format(0, ',', ' ') }} FCFA</td>
+                        <td class="nombre">{{ tableau.totalAmendes|number_format(0, ',', ' ') }} FCFA</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        {% endfor %}
+
+        <h2>Récapitulatif de la campagne</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Membre</th>
+                    <th class="nombre">Total cotisé</th>
+                    <th class="nombre">Total des amendes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ligne in recapitulatif %}
+                    <tr>
+                        <td>{{ ligne.membre.prenom }} {{ ligne.membre.nom }}</td>
+                        <td class="nombre">{{ ligne.cotise|number_format(0, ',', ' ') }} FCFA</td>
+                        <td class="nombre">{{ ligne.amendes|number_format(0, ',', ' ') }} FCFA</td>
+                    </tr>
+                {% endfor %}
+                <tr class="total">
+                    <td>Montant total recouvré / total des amendes</td>
+                    <td class="nombre">{{ totalRecouvre|number_format(0, ',', ' ') }} FCFA</td>
+                    <td class="nombre">{{ totalAmendes|number_format(0, ',', ' ') }} FCFA</td>
+                </tr>
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}

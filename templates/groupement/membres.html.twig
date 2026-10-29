@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Membres de {{ groupement.nom }}{% endblock %}
+
+{% block body %}
+    <p class="fil">
+        <a href="{{ path('groupement_index') }}">Groupements</a> &gt;
+        <a href="{{ path('groupement_show', {id: groupement.id}) }}">{{ groupement.nom }}</a> &gt; Membres
+    </p>
+
+    <h1>Membres de {{ groupement.nom }}</h1>
+
+    {% if membres is empty %}
+        <p class="vide">Aucun membre dans ce groupement.</p>
+    {% else %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Rôle</th>
+                    <th>Fonction</th>
+                    <th>Téléphone</th>
+                    <th>Adresse</th>
+                    <th>Login</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for membre in membres %}
+                    <tr>
+                        <td>{{ membre.nom }}</td>
+                        <td>{{ membre.prenom }}</td>
+                        <td>{{ membre.role.nomRole }}</td>
+                        <td>{{ membre.fonction }}</td>
+                        <td>{{ membre.tel }}</td>
+                        <td>{{ membre.adresse }}</td>
+                        <td>{{ membre.login }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Groupements{% endblock %}
+
+{% block body %}
+    <h1>Groupements</h1>
+
+    {% if lignes is empty %}
+        <p class="vide">Aucun groupement.</p>
+    {% else %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Téléphone</th>
+                    <th>Adresse</th>
+                    <th class="nombre">Membres</th>
+                    <th class="nombre">Exercices en cours</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ligne in lignes %}
+                    <tr>
+                        <td>{{ ligne.groupement.nom }}</td>
+                        <td>{{ ligne.groupement.tel }}</td>
+                        <td>{{ ligne.groupement.adresse }}</td>
+                        <td class="nombre">{{ ligne.nbMembres }}</td>
+                        <td class="nombre">{{ ligne.nbExercicesEnCours }}</td>
+                        <td><a href="{{ path('groupement_show', {id: ligne.groupement.id}) }}">Voir la fiche</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}
