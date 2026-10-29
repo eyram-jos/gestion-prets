@@ -2,7 +2,6 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Campagne;
 use App\Entity\Seance;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -16,7 +15,8 @@ class SeanceFixtures extends Fixture implements DependentFixtureInterface
     {
         // Une séance par mois, à partir de la date de début de la campagne.
         foreach (CampagneFixtures::CAMPAGNES as $cle => $infos) {
-            $campagne = $this->getReference($cle, Campagne::class);
+            // La reference est rangee sous la classe exacte (Tontine ou Epargne), pas sous Campagne.
+            $campagne = $this->getReference($cle, $infos['classe']);
             $debut = new \DateTimeImmutable($infos['debut']);
 
             for ($n = 1; $n <= self::NB_SEANCES; $n++) {
