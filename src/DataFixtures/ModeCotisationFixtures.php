@@ -2,7 +2,6 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Campagne;
 use App\Entity\Membre;
 use App\Entity\ModeCotisation;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -15,7 +14,8 @@ class ModeCotisationFixtures extends Fixture implements DependentFixtureInterfac
     {
         // Tous les membres d'un groupement participent aux campagnes de ce groupement.
         foreach (CampagneFixtures::CAMPAGNES as $cle => $infos) {
-            $campagne = $this->getReference($cle, Campagne::class);
+            // La reference est rangee sous la classe exacte (Tontine ou Epargne), pas sous Campagne.
+            $campagne = $this->getReference($cle, $infos['classe']);
             $g = $infos['groupement'];
 
             foreach (array_keys(MembreFixtures::MEMBRES[$g]) as $m) {
