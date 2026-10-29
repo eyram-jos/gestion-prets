@@ -28,9 +28,9 @@ abstract class Campagne
     #[ORM\Column]
     private ?float $montant = null;
 
-    #[ORM\ManyToOne(targetEntity: Groupement::class)]
+    #[ORM\ManyToOne(targetEntity: Exercice::class)]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Groupement $groupement = null;
+    private ?Exercice $exercice = null;
 
     public function getId(): ?int { return $this->id; }
 
@@ -46,6 +46,6 @@ abstract class Campagne
     public function getMontant(): ?float { return $this->montant; }
     public function setMontant(float $montant): static { $this->montant = $montant; return $this; }
 
-    public function getGroupement(): ?Groupement { return $this->groupement; }
-    public function setGroupement(Groupement $groupement): static { $this->groupement = $groupement; return $this; }
+    public function getExercice(): ?Exercice { return $this->exercice; }
+    public function setExercice(Exercice $exercice): static { $this->exercice = $exercice; return $this; }
 }
