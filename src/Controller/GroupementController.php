@@ -56,4 +56,17 @@ class GroupementController extends AbstractController
             'clotures' => array_filter($exercices, fn (Exercice $e) => !$e->getStatut()->estOuvert()),
         ]);
     }
+
+    // Liste des membres d'un groupement.
+    #[Route('/groupements/{id}/membres', name: 'groupement_membres', requirements: ['id' => '\d+'])]
+    public function membres(Groupement $groupement): Response
+    {
+        $membres = $this->em->getRepository(Membre::class)
+            ->findBy(['groupement' => $groupement], ['nom' => 'ASC']);
+
+        return $this->render('groupement/membres.html.twig', [
+            'groupement' => $groupement,
+            'membres' => $membres,
+        ]);
+    }
 }
