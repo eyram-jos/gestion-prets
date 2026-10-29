@@ -10,6 +10,10 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\DiscriminatorMap(['cotisation' => Cotisation::class, 'amende' => Amende::class])]
 abstract class Operation
 {
+    // Chaque type d'opération indique la part qu'elle représente en cotisation et en amende.
+    abstract public function montantCotise(): float;
+    abstract public function montantAmende(): float;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
