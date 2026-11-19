@@ -9799,6 +9799,14 @@
 							}
 						}
 					]
+				},
+				{
+					"_type": "UMLUseCaseDiagram",
+					"_id": "AAAAAAGh8+9fy5FBCX8=",
+					"_parent": {
+						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
+					},
+					"name": "Diagramme de cas d'utilisation"
 				}
 			]
 		}
