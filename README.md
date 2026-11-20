@@ -53,3 +53,15 @@ Sans la Symfony CLI : `php -S 127.0.0.1:8000 -t public`. Puis ouvrir `http://127
 - `livrable-2/documentation` : README et configuration de la base.
 
 Le modèle de classes est décrit dans [docs/modelisation.md](docs/modelisation.md).
+
+## Modélisation
+
+### Diagramme de classes
+
+![Diagramme de classes](docs/images/diagramme-classes.png)
+
+### Diagramme de cas d'utilisation
+
+![Diagramme de cas d'utilisation](docs/images/diagramme-cas-utilisation.png)
+
+Le projet StarUML est dans `docs/modelisation.mdj`. Une version texte du modèle (Mermaid) est dans `docs/modelisation.md`.
