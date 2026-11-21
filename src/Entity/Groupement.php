@@ -3,9 +3,10 @@
 namespace App\Entity;
 
 use App\Traits\DateTimeTrait;
+use App\Repository\GroupementRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: GroupementRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 class Groupement
 {
