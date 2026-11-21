@@ -5,9 +5,10 @@ namespace App\Entity;
 use App\Statut\StatutExercice;
 use App\Traits\DateTimeTrait;
 use Doctrine\DBAL\Types\Types;
+use App\Repository\ExerciceRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: ExerciceRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 class Exercice
 {
