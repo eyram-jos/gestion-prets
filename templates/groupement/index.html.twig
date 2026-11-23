@@ -2,11 +2,31 @@
 
 {% block title %}Groupements{% endblock %}
 
+{% block stylesheets %}
+    <style>
+        .filtre { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; background: #fff; padding: 12px 16px; border: 1px solid #ddd; margin-bottom: 16px; }
+        .filtre label { display: block; font-size: 13px; margin-bottom: 4px; }
+        .filtre input { padding: 6px 8px; border: 1px solid #bbb; border-radius: 4px; }
+        .filtre button { padding: 7px 14px; background: #4b2e83; color: #fff; border: 0; border-radius: 4px; cursor: pointer; }
+        .pagination { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+        .pagination a, .pagination span { padding: 4px 10px; border: 1px solid #ddd; background: #fff; text-decoration: none; }
+        .pagination .courante { background: #4b2e83; color: #fff; border-color: #4b2e83; }
+        .pagination .inactif { color: #aaa; }
+    </style>
+{% endblock %}
+
 {% block body %}
     <h1>Groupements</h1>
 
-    {% if lignes is empty %}
-        <p class="vide">Aucun groupement.</p>
+    {{ form_start(form, {attr: {class: 'filtre'}}) }}
+        {{ form_row(form.tel) }}
+        {{ form_row(form.ville) }}
+        {{ form_widget(form.rechercher) }}
+        <a href="{{ path('groupement_index') }}">Réinitialiser</a>
+    {{ form_end(form) }}
+
+    {% if liste.lignes is empty %}
+        <p class="vide">Aucun groupement ne correspond à la recherche.</p>
     {% else %}
         <table>
             <thead>
@@ -20,17 +40,43 @@
                 </tr>
             </thead>
             <tbody>
-                {% for ligne in lignes %}
+                {% for ligne in liste.lignes %}
                     <tr>
-                        <td>{{ ligne.groupement.nom }}</td>
-                        <td>{{ ligne.groupement.tel }}</td>
-                        <td>{{ ligne.groupement.adresse }}</td>
+                        <td>{{ ligne.nom }}</td>
+                        <td>{{ ligne.tel }}</td>
+                        <td>{{ ligne.adresse }}</td>
                         <td class="nombre">{{ ligne.nbMembres }}</td>
                         <td class="nombre">{{ ligne.nbExercicesEnCours }}</td>
-                        <td><a href="{{ path('groupement_show', {id: ligne.groupement.id}) }}">Voir la fiche</a></td>
+                        <td><a href="{{ path('groupement_show', {id: ligne.id}) }}">Voir la fiche</a></td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
+
+        <p>Page {{ liste.page }} sur {{ liste.nbPages }} — {{ liste.total }} groupement(s)</p>
+
+        {% if liste.nbPages > 1 %}
+            <nav class="pagination" aria-label="Pagination">
+                {% if liste.aPagePrecedente %}
+                    <a href="{{ path('groupement_index', {tel: filtre.tel, ville: filtre.ville, page: liste.page - 1}) }}">Précédent</a>
+                {% else %}
+                    <span class="inactif">Précédent</span>
+                {% endif %}
+
+                {% for n in 1..liste.nbPages %}
+                    {% if n == liste.page %}
+                        <span class="courante">{{ n }}</span>
+                    {% else %}
+                        <a href="{{ path('groupement_index', {tel: filtre.tel, ville: filtre.ville, page: n}) }}">{{ n }}</a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if liste.aPageSuivante %}
+                    <a href="{{ path('groupement_index', {tel: filtre.tel, ville: filtre.ville, page: liste.page + 1}) }}">Suivant</a>
+                {% else %}
+                    <span class="inactif">Suivant</span>
+                {% endif %}
+            </nav>
+        {% endif %}
     {% endif %}
 {% endblock %}
