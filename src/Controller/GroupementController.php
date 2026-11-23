@@ -2,12 +2,15 @@
 
 namespace App\Controller;
 
+use App\Dto\GroupementFiltreDto;
 use App\Entity\Exercice;
 use App\Entity\Groupement;
 use App\Entity\Membre;
-use App\Statut\StatutExercice;
+use App\Form\GroupementFiltreType;
+use App\Service\GroupementService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -24,23 +27,27 @@ class GroupementController extends AbstractController
         return $this->redirectToRoute('groupement_index');
     }
 
-    // Liste des groupements, avec le nombre de membres et d'exercices en cours.
+    // Liste des groupements : cette fonction récupère le DTO, le confie au service qui filtre
+    // et pagine, puis affiche le résultat. Elle ne fait aucun calcul elle-même.
     #[Route('/groupements', name: 'groupement_index')]
-    public function index(): Response
+    public function index(Request $request, GroupementService $service): Response
     {
-        $lignes = [];
-        foreach ($this->em->getRepository(Groupement::class)->findBy([], ['nom' => 'ASC']) as $groupement) {
-            $lignes[] = [
-                'groupement' => $groupement,
-                'nbMembres' => $this->em->getRepository(Membre::class)->count(['groupement' => $groupement]),
-                'nbExercicesEnCours' => $this->em->getRepository(Exercice::class)->count([
-                    'groupement' => $groupement,
-                    'statut' => StatutExercice::EN_COURS,
-                ]),
-            ];
-        }
+        // Le DTO d'entrée est rempli par le formulaire de filtre (téléphone et ville)...
+        $filtre = new GroupementFiltreDto();
+        $form = $this->createForm(GroupementFiltreType::class, $filtre);
+        $form->handleRequest($request);
 
-        return $this->render('groupement/index.html.twig', ['lignes' => $lignes]);
+        // ... et par le numéro de page, lu dans l'adresse (une valeur invalide donne la page 1).
+        $filtre->setPage((int) $request->query->get('page', 1));
+
+        // Le service filtre, pagine et renvoie le DTO de sortie.
+        $liste = $service->liste($filtre);
+
+        return $this->render('groupement/index.html.twig', [
+            'form' => $form->createView(),
+            'liste' => $liste,
+            'filtre' => $filtre,
+        ]);
     }
 
     // Fiche d'un groupement : ses exercices en cours, puis ses exercices clôturés.
